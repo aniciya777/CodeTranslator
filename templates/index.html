@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <ul class="nav nav-pills mb-3 h5" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-text-tab" data-toggle="pill" href="#pills-text" role="tab" aria-controls="pills-text" aria-selected="true">
+                <img src="static/svg/book.svg" width="25" height="25" class="d-inline-block align-top" alt="">
+                Текст
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-document-tab" data-toggle="pill" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false">
+                <img src="static/svg/file.svg" width="25" height="25" class="d-inline-block align-top" alt="">
+                Документ
+            </a>
+        </li>
+    </ul>
+    <form action="" method="post">
+        <div class="form-group form-row">
+            <label for="inputGroupSelectLanguage" class="col-12 col-md-3 col-form-label">
+                Язык программирования
+            </label>
+            <div class="col-12 col-md-9">
+                <select class="custom-select" id="inputGroupSelectLanguage" required="required">
+                    {% for key, value in PARSERS.items() %}
+                        <option value="{{ key }}">{{ value['desc'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-text" role="tabpanel" aria-labelledby="pills-text-tab">
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-col col-6">
+                            <select class="custom-select" id="inputGroupSelectLanguageFrom" required="required">
+                                <option value="auto">Определить язык</option>
+                                <div class="dropdown-divider"></div>
+                                <option value="en">Английский</option>
+                                <option value="ru">Русский</option>
+                                {% for key, value in LANGS.items() if key %}
+                                    <option value="{{ key }}">{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-col col-6">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col col-6">
+                            <textarea name="" id="" cols="30" rows="10"
+                                                        class="form-control" placeholder="ВВЕДИТЕ ТЕКСТ"></textarea>
+                        </div>
+                        <div class="form-col col-6">
+                            <textarea name="" id="" cols="30" rows="10"
+                                                        class="form-control" placeholder="ПЕРЕВОД" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-document" role="tabpanel" aria-labelledby="pills-document-tab">
+                Документ
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-row justify-content-center">
+                <button type="submit" class="btn btn-primary ">Перевести</button>
+            </div>
+        </div>
+
+
+    </form>
+{% endblock %}
