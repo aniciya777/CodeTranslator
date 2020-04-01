@@ -7,6 +7,7 @@ HOST = '127.0.0.1'
 PORT = 80
 DEBAG = True
 TRANSLATE_API_KEY = 'trnsl.1.1.20200312T083253Z.ed1eea08e54806bb.c8454d7a3f49ddd70d04ef91d585a889e21b3a3d'
+LIMIT_CHARS = 10000
 LANGS = {}
 LANGS_FROM = {}
 DIRS = {}
@@ -15,18 +16,21 @@ LANGS_JSON = ''
 PARSERS = {
     'text': {
         'desc': 'Текст',
-        'files': {'txt'},
-        'parser': text.text_parser
+        'files': ['txt'],
+        'parser': text.text_parser,
+        'priority': 1.0,
     },
     'python3': {
         'desc': 'Python 3',
-        'files': {'py'},
-        'parser': python.python_parser
+        'files': ['py'],
+        'parser': python.python_parser,
+        'priority': 1.0,
     },
     'python2': {
         'desc': 'Python 2',
-        'files': set(),
-        'parser': python.python_parser
+        'files': ['py'],
+        'parser': python.python_parser,
+        'priority': 0.5,
     },
 }
 

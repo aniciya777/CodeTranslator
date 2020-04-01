@@ -45,3 +45,4 @@ $('#inputGroupSelectLanguageFrom').change(function() {
 	});
 	$("#inputGroupSelectLanguageTo option[value=" + value_to + "]").attr("selected", "selected");
 });
+

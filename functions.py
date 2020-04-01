@@ -24,7 +24,7 @@ def translate(data, lang_from, lang_to):
     try:
         response = requests.post('https://translate.yandex.net/api/v1.5/tr.json/translate', params={
             'key': TRANSLATE_API_KEY,
-            'text': text,
+            'text': text[:LIMIT_CHARS],
             'lang': f'{lang_from}-{lang_to}',
             'format': 'plain'
         })

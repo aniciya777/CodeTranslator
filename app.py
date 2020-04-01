@@ -11,10 +11,10 @@ def index():
     inputText = request.form.get('inputText', '').strip()
     lang1_key = request.form.get('inputGroupSelectLanguageFrom', '')
     lang2_key = request.form.get('inputGroupSelectLanguageTo', '')
-    selectType = request.form.get('selectType', ''),
+    selectType = request.form.get('selectType', 'text'),
     outputText = ''
+    parser = PARSERS[selectType[0]]
     if inputText:
-        parser = PARSERS[selectType[0]]
         data = parser['parser'](inputText)
         if not lang1_key or lang1_key == 'auto':
             lang1_key = detect_lang(data)
@@ -32,6 +32,7 @@ def index():
         'selectType': selectType,
         'dir_json': DIR_JSON,
         'langs_json': LANGS_JSON,
+        'file_name': 'translate.' + parser['files'][0],
     }
     return render_template('index.html', **params)
 
