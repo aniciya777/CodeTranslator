@@ -9,6 +9,7 @@
 
     var startUpload = function(files) {
         $('#hidden_file_name').val(files[0].name);
+        document.getElementById('js-upload-files').files = files;
         $('#translate_btn').click();
     };
 

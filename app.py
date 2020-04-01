@@ -8,7 +8,11 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    inputText = request.form.get('inputText', '').strip()
+    if request.files:
+        f = request.files['files'].read()
+        inputText = f.decode('utf-8')
+    else:
+        inputText = request.form.get('inputText', '').strip()
     lang1_key = request.form.get('inputGroupSelectLanguageFrom', '')
     lang2_key = request.form.get('inputGroupSelectLanguageTo', '')
     selectType = request.form.get('selectType', 'text'),
