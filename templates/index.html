@@ -22,9 +22,9 @@
                 Язык программирования
             </label>
             <div class="col-12 col-md-9">
-                <select class="custom-select" id="inputGroupSelectLanguage" required="required">
+                <select class="custom-select" id="selectType" name='selectType' required="required">
                     {% for key, value in PARSERS.items() %}
-                        <option value="{{ key }}">{{ value['desc'] }}</option>
+                        <option value="{{ key }}" {% if selectType == key %} selected='selected'{% endif %}>{{ value['desc'] }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -34,27 +34,61 @@
                 <div class="form-group">
                     <div class="form-row">
                         <div class="form-col col-6">
-                            <select class="custom-select" id="inputGroupSelectLanguageFrom" required="required">
-                                <option value="auto">Определить язык</option>
+                            <select class="custom-select" id="inputGroupSelectLanguageFrom" name="inputGroupSelectLanguageFrom" required="required">
+                                <option value="auto" {% if lang1_key == 'auto' %} selected='selected' {% endif %}>Определить язык</option>
                                 <div class="dropdown-divider"></div>
-                                <option value="en">Английский</option>
-                                <option value="ru">Русский</option>
-                                {% for key, value in LANGS.items() if key %}
-                                    <option value="{{ key }}">{{ value }}</option>
+                                <option value="en" {% if lang1_key == 'en' %} selected='selected' {% endif %}>Английский</option>
+                                <option value="ru" {% if lang1_key == 'ru' %} selected='selected' {% endif %}>Русский</option>
+                                {% for key, value in LANGS_FROM.items() if key not in ['ru', 'en'] %}
+                                    <option value="{{ key }}" {% if lang1_key == key %} selected 'selected' {% endif %}>{{ value }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="form-col col-6">
+                            <select class="custom-select" id="inputGroupSelectLanguageTo" name="inputGroupSelectLanguageTo">
+                                {% if 'ru' in LANGS_TO.keys() %}
+                                    <option value="ru" {% if lang2_key == 'ru' %} selected='selected' {% endif %}>Русский</option>
+                                {% endif %}
+                                {% if 'en' in LANGS_TO.keys() %}
+                                    <option value="en" {% if lang2_key == 'en' %} selected='selected' {% endif %}>Английский</option>
+                                {% endif %}
+                                {% for key, value in LANGS_TO.items() if key not in ['ru', 'en'] %}
+                                    {% if lang1_key != key %}
+                                        <option value="{{ key }}" {% if lang2_key == key %} selected='selected' {% endif %}>{{ value }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-col col-6">
-                            <textarea name="" id="" cols="30" rows="10"
-                                                        class="form-control" placeholder="ВВЕДИТЕ ТЕКСТ"></textarea>
+                            <textarea name="inputText" id="inputText" cols="30" rows="10"
+                                                    class="form-control" placeholder="ВВЕДИТЕ ТЕКСТ" >{{ inputText }}</textarea>
                         </div>
                         <div class="form-col col-6">
-                            <textarea name="" id="" cols="30" rows="10"
-                                                        class="form-control" placeholder="ПЕРЕВОД" disabled></textarea>
+                            <textarea id="outputText" cols="30" rows="10"
+                                                        class="form-control" placeholder="ПЕРЕВОД" readonly>{{ outputText }}</textarea>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-row">
+                        <div class="form-col col-3">
+                            <div type="submit" class="btn btn-light w-100" id="clearInputText">
+                                <img src="static/svg/clear.svg" width="20" height="20" class="d-inline-block align-top" alt="">
+                                Очистить
+                            </div>
+                        </div>
+                        <div class="form-col col-3">
+                            <div type="submit" class="btn btn-light w-100" id="copyInputText">
+                                <img src="static/svg/copy.svg" width="20" height="20" class="d-inline-block align-top" alt="">
+                                Копировать
+                            </div>
+                        </div>
+                        <div class="form-col col-6">
+                            <div type="submit" class="btn btn-light w-100" id="copyOutputText">
+                                <img src="static/svg/copy.svg" width="20" height="20" class="d-inline-block align-top" alt="">
+                                Копировать перевод
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -68,7 +102,9 @@
                 <button type="submit" class="btn btn-primary ">Перевести</button>
             </div>
         </div>
-
-
     </form>
+    <script>
+        var dir_traslates = {{ dir_json }};
+        var langs_traslates = {{ langs_json }};
+    </script>
 {% endblock %}

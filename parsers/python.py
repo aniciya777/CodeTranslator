@@ -1,7 +1,7 @@
 def python_parser(text):
     arr = []
     is_multi_comment = False
-    for row, s in enumerate(text.split('\n')):
+    for row, s in enumerate(text.splitlines()):
         if is_multi_comment:
             pass
         else:
