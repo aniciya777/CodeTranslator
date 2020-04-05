@@ -19,10 +19,10 @@
     <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
         <input type="hidden" id='hidden_file_name' name="hidden_file_name" value="{{ file_name }}">
         <div class="form-row">
-            <label for="inputGroupSelectLanguage" class="col-12 col-md-3 col-form-label">
+            <label for="inputGroupSelectLanguage" class="col-12 col-md-4 col-form-label" style="font-size: 12pt;">
                 Язык программирования
             </label>
-            <div class="col-12 col-md-9">
+            <div class="col-12 col-md-8">
                 <select class="custom-select" id="selectType" name='selectType' required="required">
                     {% for key, value in PARSERS.items() %}
                         <option value="{{ key }}" {% if selectType == key %} selected='selected'{% endif %}>{{ value['desc'] }}</option>
@@ -93,7 +93,7 @@
                             </div>
                         </div>
                         <div class="form-col col-3">
-                            <div type="submit" class="btn btn-light w-100" id="copyOutputText">
+                            <div type="submit" class="btn btn-light w-100" id="downloadOutputText">
                                 <img src="static/svg/download.svg" width="20" height="20" class="d-inline-block align-top" alt="">
                                 Скачать
                             </div>
@@ -111,7 +111,7 @@
                         </div>
                         <!-- Drop Zone -->
                         <div class="upload-drop-zone" id="drop-zone">
-                            или ператащите файл на сюда
+                            или перетащите файл сюда
                         </div>
                     </div>
                 </div>

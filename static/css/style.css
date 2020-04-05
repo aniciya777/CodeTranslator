@@ -28,3 +28,10 @@ footer a {
   color: #222;
   border-color: #222;
 }
+
+#translate_btn {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #0054ad;
+    background-image: linear-gradient(#007BFF, #0064D0);
+}
