@@ -46,3 +46,8 @@ $('#inputGroupSelectLanguageFrom').change(function() {
 	$("#inputGroupSelectLanguageTo option[value=" + value_to + "]").attr("selected", "selected");
 });
 
+$('#downloadOutputText').click(function () {
+	$('#hidden_download').val('true');
+	$('#translate_btn').click();
+	$('#hidden_download').val('false');
+});
