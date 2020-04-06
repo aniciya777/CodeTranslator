@@ -1,11 +1,45 @@
-from flask import Flask, render_template, request, send_file, after_this_request
+from flask import Flask, render_template, request, redirect
 from config import *
 from functions import detect_lang, translate, replacer
 from hashlib import md5
 import os
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, FileField
+from wtforms.validators import DataRequired
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = SECRET_KEY
+
+
+class LoginForm(FlaskForm):
+    email = StringField('Почта', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    submit = SubmitField('Войти')
+
+
+class RegisterForm(FlaskForm):
+    email = StringField('Почта', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    password_2 = PasswordField('Повторите пароль', validators=[DataRequired()])
+    photo = FileField('Фото профиля')
+    submit = SubmitField('Зарегистрироваться')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        return redirect('/')
+    return render_template('login.html', form=form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        return redirect('/')
+    return render_template('register.html', form=form)
 
 
 @app.route('/', methods=['GET', 'POST'])

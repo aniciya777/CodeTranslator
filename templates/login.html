@@ -1,0 +1,18 @@
+{% extends 'base_color.html' %}
+
+{% block content %}
+    <form action="#" method="post" class="main-form">
+        {{ form.hidden_tag() }}
+        <img src="../static/svg/file-code.svg" alt="icon" class="form-icon">
+        <h1>Авторизация</h1>
+        <div class="group">
+            {{ form.email(class="control") }}
+            {{ form.email.label }}<br>
+        </div>
+        <div class="group">
+            {{ form.password(class="control") }}
+            {{ form.password.label }}<br>
+        </div>
+        {{ form.submit(type="submit", class="submit") }}
+    </form>
+{% endblock %}
