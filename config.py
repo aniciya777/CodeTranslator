@@ -62,7 +62,10 @@ def getLangs():
     finally:
         LANGS_FROM = {key: value for key, value in LANGS.items() if key in DIRS}
         dirs_list = {key: list(value) for key, value in DIRS.items()}
-        json.dump(dirs_list, open('static/data/dirs.json', 'w'))
+        try:
+            json.dump(dirs_list, open('static/data/dirs.json', 'w'))
+        except FileNotFoundError:
+            print('Ошибка записи dirs.json')
         DIR_JSON = '{\n'
         for key, value in DIRS.items():
             temp = ', '.join(f'`{s}`' for s in value)
@@ -72,7 +75,10 @@ def getLangs():
         for key, value in LANGS.items():
             LANGS_JSON += f'{key}: `{value}`, '
         LANGS_JSON += '\n}'
-        json.dump(LANGS, open('static/data/langs.json', 'w'))
+        try:
+            json.dump(LANGS, open('static/data/langs.json', 'w'))
+        except FileNotFoundError:
+            print('Ошибка записи langs.json')
 
 
 getLangs()
