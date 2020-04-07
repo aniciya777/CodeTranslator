@@ -12,11 +12,34 @@
         <div class="group">
             {{ form.email(class="control") }}
             {{ form.email.label }}
+            {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <h3>
+                        {{ error }}
+                    </h3>
+                </div>
+            {% endfor %}
         </div>
         <div class="group">
             {{ form.password(class="control") }}
             {{ form.password.label }}
+            {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <h3>
+                        {{ error }}
+                    </h3>
+                </div>
+            {% endfor %}
         </div>
+        {% if message %}
+            <div class="group">
+                <div class="alert alert-danger" role="alert">
+                    <h3>
+                        {{ message }}
+                    </h3>
+                </div>
+            </div>
+        {% endif %}
         {{ form.submit(type="submit", class="submit") }}
     </form>
 {% endblock %}

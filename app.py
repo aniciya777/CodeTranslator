@@ -5,41 +5,118 @@ from hashlib import md5
 import os
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email as EmailValidator, EqualTo, \
+    Length as LengthValidator, Regexp as RegexpValidator
+from data import db_session
+from data.users import User
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
+login_manager = LoginManager()
+login_manager.init_app(app)
+db_session.global_init("db/database.sqlite")
+session = db_session.create_session()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    session = db_session.create_session()
+    return session.query(User).get(user_id)
+
+
+class Stripped(object):
+    def process_formdata(self, valuelist):
+        if valuelist:
+            self.data = valuelist[0].strip()
+        else:
+            self.data = ''
+
+
+class StrippedStringField(Stripped, StringField):
+    pass
+
+
+class StrippedPasswordField(Stripped, PasswordField):
+    pass
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Почта', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
+    email = StrippedStringField('Почта', validators=[
+        DataRequired(message='Введите почту'),
+        EmailValidator(message='Неверный адрес электронной почты')
+    ])
+    password = StrippedPasswordField('Пароль', validators=[
+        DataRequired(message='Введите пароль')
+    ])
     submit = SubmitField('Войти')
 
 
 class RegisterForm(FlaskForm):
-    email = StringField('Почта', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    password_2 = PasswordField('Повторите пароль', validators=[DataRequired()])
+    email = StrippedStringField('Почта', validators=[
+        DataRequired(message='Введите почту'),
+        EmailValidator()
+    ])
+    password = StrippedPasswordField('Пароль', validators=[
+        DataRequired(message='Введите пароль'),
+        LengthValidator(min=MIN_PASSWORD_LENGTH, message=f'Длина пароля более {MIN_PASSWORD_LENGTH} символов'),
+        RegexpValidator(r'(?=.*[a-zA-Z])(?=.*[0-9])', flags=0, message='Пароль должен содержать цифры и буквы латинского алфавита')
+    ])
+    password_2 = StrippedPasswordField('Повторите пароль', validators=[
+        DataRequired(message='Введите пароль ещё раз'),
+        EqualTo('password', 'Пароли не совпадают')
+    ])
     photo = FileField('Фото профиля')
     submit = SubmitField('Зарегистрироваться')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect("/")
     form = LoginForm()
     if form.validate_on_submit():
-        return redirect('/')
+        email = form.email.data.strip()
+        password = form.password.data.strip()
+        user = session.query(User).filter(User.email == email).first()
+        if user and user.check_password(password):
+            login_user(user, remember=True)
+            return redirect("/")
+        return render_template('login.html',
+                               message="Неправильный логин или пароль",
+                               form=form)
+
     return render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect("/")
     form = RegisterForm()
     if form.validate_on_submit():
+        email = form.email.data.strip()
+        password = form.password.data.strip()
+        user = session.query(User).filter(User.email == email).first()
+        if user:
+            return render_template('register.html',
+                                   message="Пользователь с такой почтой уже зарегистрирован",
+                                   form=form)
+        new_user = User(email=email)
+        new_user.set_password(password)
+        session.add(new_user)
+        session.commit()
+        login_user(new_user, remember=True)
         return redirect('/')
     return render_template('register.html', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 
 @app.route('/', methods=['GET', 'POST'])
