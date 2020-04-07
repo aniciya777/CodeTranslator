@@ -4,18 +4,22 @@
     <form action="#" method="post" class="main-form">
         {{ form.hidden_tag() }}
         <img src="../static/svg/file-code.svg" alt="icon" class="form-icon">
-        <h1>Регистрация</h1>
+        <h1>
+            <span>
+                Регистрация
+            </span>
+        </h1>
         <div class="group">
             {{ form.email(class="control") }}
-            {{ form.email.label }}<br>
+            {{ form.email.label }}
         </div>
         <div class="group">
             {{ form.password(class="control") }}
-            {{ form.password.label }}<br>
+            {{ form.password.label }}
         </div>
         <div class="group">
             {{ form.password_2(class="control") }}
-            {{ form.password_2.label }}<br>
+            {{ form.password_2.label }}
         </div>
         <div class="group">
             {{ form.photo(class="control-file") }}

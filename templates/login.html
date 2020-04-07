@@ -4,14 +4,18 @@
     <form action="#" method="post" class="main-form">
         {{ form.hidden_tag() }}
         <img src="../static/svg/file-code.svg" alt="icon" class="form-icon">
-        <h1>Авторизация</h1>
+        <h1>
+            <span>
+                Авторизация
+            </span>
+        </h1>
         <div class="group">
             {{ form.email(class="control") }}
-            {{ form.email.label }}<br>
+            {{ form.email.label }}
         </div>
         <div class="group">
             {{ form.password(class="control") }}
-            {{ form.password.label }}<br>
+            {{ form.password.label }}
         </div>
         {{ form.submit(type="submit", class="submit") }}
     </form>
