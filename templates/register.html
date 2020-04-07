@@ -1,7 +1,7 @@
 {% extends 'base_color.html' %}
 
 {% block content %}
-    <form action="#" method="post" class="main-form">
+    <form action="#" method="post" class="main-form" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <img src="../static/svg/file-code.svg" alt="icon" class="form-icon">
         <h1>
@@ -22,7 +22,15 @@
             {{ form.password_2.label }}
         </div>
         <div class="group">
-            {{ form.photo(class="control-file") }}
+            <div class="row group-file">
+                {{ form.photo(class="control-file", onchange="getUploadFileName(this.value);") }}
+                <div class="col-6">
+                    <button class="control-btn">Выберите файл</button>
+                </div>
+                <div class="col-6">
+                    <input type="text" class="control" id="visible_file_name" value="" placeholder="Имя файла" readonly>
+                </div>
+            </div>
             {{ form.photo.label }}<br>
         </div>
         {{ form.submit(type="submit", class="submit") }}

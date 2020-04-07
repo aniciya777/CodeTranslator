@@ -75,9 +75,36 @@ body {
     padding: 6px 57px;
 }
 
+.main-form .group-file {
+    position: relative;
+}
+
 .main-form .group .control-file {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    -moz-opacity: 0;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    font-size: 150px;
+    height: 100%;
+    z-index:20;
+}
+
+#visible_file_name {
+    text-align: center;
+}
+
+.main-form .control-btn {
+    height: 46px;
     width: 100%;
-    font-family: Roboto;
-    font-style: normal;
-    color: #000000;
+    background: #FFCC00;
+    border: 3px solid #000000;
+    box-sizing: border-box;
+    border-radius: 45px;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
 }
