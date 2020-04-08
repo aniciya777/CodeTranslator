@@ -181,4 +181,5 @@ def download():
 
 
 if __name__ == '__main__':
-    app.run(host=HOST, port=PORT, debug=DEBAG)
+    port_run = int(os.environ.get("PORT", PORT))
+    app.run(host=HOST, port=port_run, debug=DEBAG)
