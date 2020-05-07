@@ -8,7 +8,6 @@
 .idea/vcs.xml
 __pycache__/
 data/__pycache__/
-db/
 parsers/__pycache__/
 static/img/
 venv/
