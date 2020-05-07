@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_from_directory, current_app, \
+    url_for
+
 from config import *
 from functions import detect_lang, translate, replacer
 from hashlib import md5
@@ -7,9 +9,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import DataRequired, Email as EmailValidator, EqualTo, \
     Length as LengthValidator, Regexp as RegexpValidator
+from flask_wtf.file import FileAllowed
 from data import db_session
 from data.users import User
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+from flask_avatars import Avatars
 
 
 app = Flask(__name__)
@@ -18,6 +22,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 db_session.global_init("db/database.sqlite")
 session = db_session.create_session()
+avatars = Avatars(app)
+app.config['AVATARS_SAVE_PATH'] = AVATARS_SAVE_PATH
 
 
 @login_manager.user_loader
@@ -67,7 +73,9 @@ class RegisterForm(FlaskForm):
         DataRequired(message='Введите пароль ещё раз'),
         EqualTo('password', 'Пароли не совпадают')
     ])
-    photo = FileField('Фото профиля')
+    photo = FileField('Фото профиля', validators=[
+        FileAllowed(['jpg', 'png'], 'The file format should be .jpg or .png.')
+    ])
     submit = SubmitField('Зарегистрироваться')
 
 
@@ -105,10 +113,19 @@ def register():
                                    form=form)
         new_user = User(email=email)
         new_user.set_password(password)
-        session.add(new_user)
-        session.commit()
-        login_user(new_user, remember=True)
-        return redirect('/')
+        if request.files:
+            f = request.files.get('photo')
+            if f:
+                raw_filename = avatars.save_avatar(f)
+                print(avatars[0])
+                # filenames = avatars.resize_avatar(raw_filename, avatars.AVA)
+                # new_user.avatar_s = url_for('get_avatar', filename=raw_filename)
+                # new_user.avatar_m = url_for('get_avatar', filename=raw_filename)
+                # new_user.avatar_l = url_for('get_avatar', filename=raw_filename)
+        # session.add(new_user)
+        # session.commit()
+        # login_user(new_user, remember=True)
+        # return redirect('/')
     return render_template('register.html', form=form)
 
 
@@ -117,6 +134,17 @@ def register():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html', not_show_avatar=True)
+
+
+@app.route('/avatars/<path:filename>')
+def get_avatar(filename):
+    return send_from_directory(current_app.config['AVATARS_SAVE_PATH'], filename)
 
 
 @app.route('/', methods=['GET', 'POST'])

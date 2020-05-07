@@ -1,1 +1,14 @@
 /static/data/download/
+.idea/.gitignore
+.idea/Project Flask.iml
+.idea/dataSources.xml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+__pycache__/
+data/__pycache__/
+db/
+parsers/__pycache__/
+static/img/
+venv/

@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="static/css/primer.css">
     <link rel="stylesheet" href="static/css/octicons.min.css">
     <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="static/css/style_color.css">
+    <link rel="stylesheet" type="text/css" href="static/fonts/Roboto/stylesheet.css">
     <script src="static/js/jquery-3.4.1.js"></script>
     <script src="static/js/bootstrap.min.js"></script>
     <link rel="icon" href="static/ico/favicon.ico">
@@ -17,9 +19,14 @@
 <body>
 <header>
     <nav class="navbar navbar-light">
-        <button class="navbar-toggler" type="button">
+        <button class="navbar-toggler" type="button" data-toggle="modal" data-target="#ModalMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
+        {% if current_user.is_authenticated and not not_show_avatar %}
+            <a class="navbar-logo" href="/profile">
+                <img src="../static/svg/user.svg" alt="profile">
+            </a>
+        {% endif %}
         <a class="navbar-brand" href="/">
             <img src="static/svg/file-code.svg" width="30" height="30" class="d-inline-block align-top" alt="">
             CODE Переводчик
@@ -33,5 +40,82 @@
 <footer class="fixed-bottom">
     <a href="http://translate.yandex.ru">Переведено сервисом «Яндекс.Переводчик»</a>
 </footer>
+<div class="modal fade" id="ModalMenu" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                {% if page != 'index' %}
+                    <a href="/">
+                        <h1>
+                            На главную
+                        </h1>
+                        <h6>
+                            чтобы перевести код
+                        </h6>
+                    </a>
+                {% endif %}
+                {% if not current_user.is_authenticated %}
+                    {% if page != 'login' %}
+                        <a href="/login">
+                            <h1>
+                                Авторизация
+                            </h1>
+                            <h6>
+                                если у Вас уже есть аккаунт
+                            </h6>
+                        </a>
+                    {% endif %}
+                    {% if page != 'register' %}
+                        <a href="/register">
+                            <h1>
+                                Регистрация
+                            </h1>
+                            <h6>
+                                если у Вас ещё нет аккаунта
+                            </h6>
+                        </a>
+                    {% endif %}
+                {% endif %}
+                {% if page != 'history' %}
+                    <a href="/history">
+                        <h1>
+                            История переводов
+                        </h1>
+                        <h6>
+                            доступ только после авторизации
+                        </h6>
+                    </a>
+                {% endif %}
+                {% if page != 'dictionary' %}
+                    <a href="/dictionary">
+                        <h1>
+                            Словарь
+                        </h1>
+                        <h6>
+                            доступ только после авторизации
+                        </h6>
+                    </a>
+                {% endif %}
+                {% if page != 'profile' %}
+                    <a href="/profile">
+                        <h1>
+                            Настройки профиля
+                        </h1>
+                        <h6>
+                            доступ только после авторизации
+                        </h6>
+                    </a>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    <a href="/logout">
+                        <h1>
+                            Выйти
+                        </h1>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

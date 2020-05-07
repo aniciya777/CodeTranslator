@@ -1,6 +1,8 @@
 requests
 Flask
 flask-wtf
+wtforms[email]
 SQLAlchemy
 Flask-Login
 alembic
+flask-avatars

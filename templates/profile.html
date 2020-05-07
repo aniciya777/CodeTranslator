@@ -1,0 +1,21 @@
+{% set page = 'profile' %}
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="custom-block">
+        <p id="avatar">
+            <img src="" alt="avatar">
+        </p>
+        <h1>
+            {{ current_user.email }}
+        </h1>
+    </div>
+    <style>
+        body {
+            background-image: url("static/svg/background 2.svg");
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+{% endblock %}

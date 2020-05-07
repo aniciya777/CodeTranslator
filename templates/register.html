@@ -1,4 +1,6 @@
-{% extends 'base_color.html' %}
+{% set page = 'register' %}
+
+{% extends 'base.html' %}
 
 {% block content %}
     <form action="#" method="post" class="main-form" enctype="multipart/form-data">
@@ -72,4 +74,11 @@
         {% endif %}
         {{ form.submit(type="submit", class="submit") }}
     </form>
+    <style>
+        body {
+            background-image: url("static/svg/background.svg");
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
 {% endblock %}

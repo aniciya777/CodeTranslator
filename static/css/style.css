@@ -5,7 +5,8 @@ body {
 header {
     position: fixed;
     width: 100%;
-    top: 0px;
+    top: 0;
+    z-index: 1000;
 }
 
 footer {
@@ -48,4 +49,39 @@ footer a {
 
 .navbar-toggler {
     background-color: white;
+}
+
+#ModalMenu .modal-content {
+    background: #FFFFFF;
+    border: 3px solid #000000;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+#ModalMenu .modal-content .modal-body {
+    padding: 30px 75px;
+    text-align: center;
+}
+
+#ModalMenu .modal-content .modal-body h1 {
+    font-size: 36px;
+    line-height: 47px;
+    color: #000000;
+}
+
+#ModalMenu .modal-content .modal-body h6 {
+    font-size: 14px;
+    line-height: 16px;
+    color: #606060;
+}
+
+#ModalMenu .modal-content .modal-body a {
+    text-decoration: none;
+    display: block;
+    border-radius: 3px;
+}
+
+#ModalMenu .modal-content .modal-body a:hover {
+    background-color: #f8f8f8;
+    box-shadow: #f8f8f8 0 0 3px 3px;
 }

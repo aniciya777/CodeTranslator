@@ -1,16 +1,10 @@
-body {
-    background-image: url("../svg/background.svg");
-    background-position: center;
-    background-attachment: fixed;
-}
-
 .navbar {
     background-color: rgba(255, 255, 255, 0.9);
 }
 
 .main-form {
     text-align: center;
-    font-family: Roboto;
+    font-family: Roboto, serif;
     font-style: normal;
     color: #000000;
 }
@@ -48,7 +42,7 @@ body {
     border-radius: 15px;
     font-size: 20px;
     padding: 0 15px;
-    font-family: Roboto;
+    font-family: Roboto, serif;
     font-style: normal;
     color: #000000;
 }
@@ -107,4 +101,48 @@ body {
     font-size: 24px;
     line-height: 28px;
     text-align: center;
+}
+
+.navbar-logo {
+    position: absolute;
+    left: 50%;
+}
+
+.navbar-logo img {
+    height: 40px;
+    border-radius: 50%;
+    border: solid 2px black;
+    position: relative;
+    left: -60%;
+    opacity: 0.6;
+}
+
+.navbar-logo img:hover {
+    opacity: 1;
+}
+
+.custom-block {
+    font-family: Roboto, serif;
+    font-style: normal;
+    font-weight: 300;
+    color: #000000;
+}
+
+.custom-block h1 {
+    text-align: center;
+    font-size: 40px;
+    line-height: 47px
+}
+
+.custom-block #avatar {
+    text-align: center;
+}
+
+.custom-block #avatar img {
+    width: 171px;
+    height: 171px;
+    background: #FFFFFF;
+    border: 5px solid #000000;
+    box-sizing: border-box;
+    border-radius: 50%;
 }
