@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from flask import Flask, render_template, request, redirect, send_from_directory, current_app, \
     url_for
 
@@ -117,15 +119,13 @@ def register():
             f = request.files.get('photo')
             if f:
                 raw_filename = avatars.save_avatar(f)
-                print(avatars[0])
-                # filenames = avatars.resize_avatar(raw_filename, avatars.AVA)
-                # new_user.avatar_s = url_for('get_avatar', filename=raw_filename)
-                # new_user.avatar_m = url_for('get_avatar', filename=raw_filename)
-                # new_user.avatar_l = url_for('get_avatar', filename=raw_filename)
-        # session.add(new_user)
-        # session.commit()
-        # login_user(new_user, remember=True)
-        # return redirect('/')
+                new_user.avatar_s = url_for('get_avatar', filename=raw_filename)
+                new_user.avatar_m = url_for('get_avatar', filename=raw_filename)
+                new_user.avatar_l = url_for('get_avatar', filename=raw_filename)
+        session.add(new_user)
+        session.commit()
+        login_user(new_user, remember=True)
+        return redirect('/')
     return render_template('register.html', form=form)
 
 

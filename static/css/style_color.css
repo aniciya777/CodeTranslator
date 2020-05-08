@@ -110,15 +110,17 @@
 
 .navbar-logo img {
     height: 40px;
+    width: 40px;
     border-radius: 50%;
     border: solid 2px black;
     position: relative;
     left: -60%;
-    opacity: 0.6;
+    opacity: 1;
+    object-fit: cover;
 }
 
 .navbar-logo img:hover {
-    opacity: 1;
+    opacity: 0.6;
 }
 
 .custom-block {
@@ -145,4 +147,5 @@
     border: 5px solid #000000;
     box-sizing: border-box;
     border-radius: 50%;
+    object-fit: cover;
 }

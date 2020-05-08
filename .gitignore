@@ -9,5 +9,5 @@
 __pycache__/
 data/__pycache__/
 parsers/__pycache__/
-static/img/
+static/img/avatars
 venv/
