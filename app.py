@@ -16,6 +16,7 @@ from data import db_session
 from data.users import User
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_avatars import Avatars
+import logging
 
 
 app = Flask(__name__)
@@ -26,6 +27,7 @@ db_session.global_init("db/database.sqlite")
 session = db_session.create_session()
 avatars = Avatars(app)
 app.config['AVATARS_SAVE_PATH'] = AVATARS_SAVE_PATH
+logging.basicConfig(level=logging.DEBUG)
 
 
 @login_manager.user_loader
@@ -79,6 +81,14 @@ class RegisterForm(FlaskForm):
         FileAllowed(['jpg', 'png'], 'The file format should be .jpg or .png.')
     ])
     submit = SubmitField('Зарегистрироваться')
+
+
+class PhotoUpdateForm(FlaskForm):
+    photo = FileField('Фото профиля', validators=[
+        FileAllowed(['jpg', 'png'], 'The file format should be .jpg or .png.'),
+        DataRequired(message='Загрузите новое фото'),
+    ])
+    submit = SubmitField('Загрузить')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -139,7 +149,46 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', not_show_avatar=True)
+    photo_update_form = PhotoUpdateForm()
+    return render_template('profile.html', not_show_avatar=True,
+                           photo_update_form=photo_update_form)
+
+@app.route('/update_photo', methods=['POST'])
+@login_required
+def update_photo():
+    form = PhotoUpdateForm()
+    if form.validate_on_submit():
+        user = session.query(User).get(current_user.id)
+        if user.avatar_s:
+            try:
+                os.remove(f'static/img{user.avatar_s}')
+            except BaseException as e:
+                logging.error(f'Error delete avatar_s for user {user} - {e}')
+            finally:
+                user.avatar_s = None
+        if user.avatar_m:
+            try:
+                os.remove(f'static/img{user.avatar_m}')
+            except BaseException as e:
+                logging.error(f'Error delete avatar_m for user {user} - {e}')
+            finally:
+                user.avatar_m = None
+        if user.avatar_l:
+            try:
+                os.remove(f'static/img{user.avatar_l}')
+            except BaseException as e:
+                logging.error(f'Error delete avatar_l for user {user} - {e}')
+            finally:
+                user.avatar_l = None
+        if request.files:
+            f = request.files.get('photo')
+            if f:
+                raw_filename = avatars.save_avatar(f)
+                user.avatar_s = url_for('get_avatar', filename=raw_filename)
+                user.avatar_m = url_for('get_avatar', filename=raw_filename)
+                user.avatar_l = url_for('get_avatar', filename=raw_filename)
+        session.commit()
+    return redirect('/profile')
 
 
 @app.route('/avatars/<path:filename>')

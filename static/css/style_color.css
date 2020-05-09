@@ -29,7 +29,7 @@
 }
 
 .main-form .group {
-    width: 536px;
+    max-width: 536px;
     margin: 0 auto 15px auto;
 }
 
@@ -67,6 +67,7 @@
     line-height: 35px;
     text-align: center;
     padding: 6px 57px;
+    color: #000000;
 }
 
 .main-form .group-file {
@@ -148,4 +149,10 @@
     box-sizing: border-box;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.profile-form button {
+    display: block;
+    margin: 18px auto;
+    min-width: 350px;
 }

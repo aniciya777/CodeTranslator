@@ -20,3 +20,6 @@ class User(SqlAlchemyBase, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
+
+    def __repr__(self):
+        return f'<User {self.id} email: {self.email}>'

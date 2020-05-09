@@ -6,7 +6,7 @@
     <div class="custom-block">
         <p id="avatar">
             {% if current_user.avatar_s %}
-                <img src="../static/img{{ current_user.avatar_s }}" alt="avatar">
+                <img src="../static/img{{ current_user.avatar_l }}" alt="avatar">
             {% else %}
                 <img src="../static/svg/user.svg" alt="avatar">
             {% endif %}
@@ -15,6 +15,17 @@
             {{ current_user.email }}
         </h1>
     </div>
+    <div class="main-form profile-form">
+        <button class="btn submit" type="submit" data-toggle="modal" data-target="#photoModal" >
+            Сменить фото
+        </button>
+        <button class="btn submit" type="submit" data-toggle="modal" data-target="#passwordModal" >
+            Сменить пароль
+        </button>
+        <button class="btn submit" type="submit" data-toggle="modal" data-target="#deleteModal" >
+            Удалить аккаунт
+        </button>
+    </div>
     <style>
         body {
             background-image: url("static/svg/background 2.svg");
@@ -22,4 +33,45 @@
             background-attachment: fixed;
         }
     </style>
+{#   ************************** МОДАЛЬНОЕ ОКНО ДЛЯ ИЗМЕНЕНИЯ ФОТОГРАФИИ *********************** #}
+    <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModallLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form action="/update_photo" method="post" class="main-form" enctype="multipart/form-data">
+                    {{ photo_update_form.hidden_tag() }}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="photoModalLabel">Смена фото</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="group">
+                            <div class="row group-file">
+                                {{ photo_update_form.photo(class="control-file", onchange="getUploadFileName(this.value);") }}
+                                <div class="col-6">
+                                    <button class="control-btn">Выберите файл</button>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="control" id="visible_file_name" value="" placeholder="Имя файла" readonly>
+                                </div>
+                            </div>
+                            {{ photo_update_form.photo.label }}
+                            {% for error in photo_update_form.photo.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <h3>
+                                        {{ error }}
+                                    </h3>
+                                </div>
+                            {% endfor %}
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        {{ photo_update_form.submit(type="submit", class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
