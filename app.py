@@ -21,13 +21,14 @@ import logging
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
+app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 login_manager = LoginManager()
 login_manager.init_app(app)
 db_session.global_init("db/database.sqlite")
 session = db_session.create_session()
 avatars = Avatars(app)
 app.config['AVATARS_SAVE_PATH'] = AVATARS_SAVE_PATH
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.ERROR)
 
 
 @login_manager.user_loader
@@ -91,6 +92,22 @@ class PhotoUpdateForm(FlaskForm):
     submit = SubmitField('Загрузить')
 
 
+class PasswordUpdateForm(FlaskForm):
+    password_old = StrippedPasswordField('Старый пароль', validators=[
+        DataRequired(message='Введите старый пароль')
+    ])
+    password = StrippedPasswordField('Новый пароль', validators=[
+        DataRequired(message='Введите новый пароль'),
+        LengthValidator(min=MIN_PASSWORD_LENGTH, message=f'Длина пароля более {MIN_PASSWORD_LENGTH} символов'),
+        RegexpValidator(r'(?=.*[a-zA-Z])(?=.*[0-9])', flags=0, message='Пароль должен содержать цифры и буквы латинского алфавита')
+    ])
+    password_2 = StrippedPasswordField('Повторите новый пароль', validators=[
+        DataRequired(message='Введите новый пароль ещё раз'),
+        EqualTo('password', 'Пароли не совпадают')
+    ])
+    submit = SubmitField('Сменить пароль')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -150,36 +167,56 @@ def logout():
 @login_required
 def profile():
     photo_update_form = PhotoUpdateForm()
+    password_update_form = PasswordUpdateForm()
     return render_template('profile.html', not_show_avatar=True,
-                           photo_update_form=photo_update_form)
+                           photo_update_form=photo_update_form,
+                           password_update_form=password_update_form)
+
+
+def delete_photos(user_id):
+    user = session.query(User).get(user_id)
+    if user.avatar_s:
+        try:
+            os.remove(f'static/img{user.avatar_s}')
+        except BaseException as e:
+            logging.error(f'Error delete avatar_s for user {user} - {e}')
+        finally:
+            user.avatar_s = None
+    if user.avatar_m:
+        try:
+            os.remove(f'static/img{user.avatar_m}')
+        except BaseException as e:
+            logging.error(f'Error delete avatar_m for user {user} - {e}')
+        finally:
+            user.avatar_m = None
+    if user.avatar_l:
+        try:
+            os.remove(f'static/img{user.avatar_l}')
+        except BaseException as e:
+            logging.error(f'Error delete avatar_l for user {user} - {e}')
+        finally:
+            user.avatar_l = None
+    session.commit()
+
+
+@app.route('/remove_account', methods=['POST'])
+@login_required
+def remove_account():
+    user_id = current_user.id
+    delete_photos(user_id)
+    logout_user()
+    user = session.query(User).get(user_id)
+    session.delete(user)
+    return render_template('account_removed.html')
+
 
 @app.route('/update_photo', methods=['POST'])
 @login_required
 def update_photo():
     form = PhotoUpdateForm()
     if form.validate_on_submit():
+        delete_photos(current_user.id)
         user = session.query(User).get(current_user.id)
-        if user.avatar_s:
-            try:
-                os.remove(f'static/img{user.avatar_s}')
-            except BaseException as e:
-                logging.error(f'Error delete avatar_s for user {user} - {e}')
-            finally:
-                user.avatar_s = None
-        if user.avatar_m:
-            try:
-                os.remove(f'static/img{user.avatar_m}')
-            except BaseException as e:
-                logging.error(f'Error delete avatar_m for user {user} - {e}')
-            finally:
-                user.avatar_m = None
-        if user.avatar_l:
-            try:
-                os.remove(f'static/img{user.avatar_l}')
-            except BaseException as e:
-                logging.error(f'Error delete avatar_l for user {user} - {e}')
-            finally:
-                user.avatar_l = None
         if request.files:
             f = request.files.get('photo')
             if f:
@@ -188,6 +225,25 @@ def update_photo():
                 user.avatar_m = url_for('get_avatar', filename=raw_filename)
                 user.avatar_l = url_for('get_avatar', filename=raw_filename)
         session.commit()
+    return redirect('/profile')
+
+
+@app.route('/update_password', methods=['POST'])
+@login_required
+def update_password():
+    form = PasswordUpdateForm()
+    if form.validate_on_submit():
+        user = session.query(User).get(current_user.id)
+        password_old = form.password_old.data.strip()
+        if not user.check_password(password_old):
+            return render_template('error_update_password.html', error='Введён неправильный старый пароль.')
+        password = form.password.data.strip()
+        if password_old == password:
+            return render_template('error_update_password.html', error='Старый и новый пароли совпадают.')
+        user.set_password(password)
+        session.commit()
+        logout_user()
+        return redirect('/login')
     return redirect('/profile')
 
 

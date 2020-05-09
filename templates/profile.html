@@ -39,6 +39,7 @@
             <div class="modal-content">
                 <form action="/update_photo" method="post" class="main-form" enctype="multipart/form-data">
                     {{ photo_update_form.hidden_tag() }}
+                    <input type="hidden" name="max_file_size" value="{{ MAX_CONTENT_LENGTH }}">
                     <div class="modal-header">
                         <h5 class="modal-title" id="photoModalLabel">Смена фото</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -64,11 +65,93 @@
                                     </h3>
                                 </div>
                             {% endfor %}
-                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                         {{ photo_update_form.submit(type="submit", class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{#   ************************** МОДАЛЬНОЕ ОКНО ДЛЯ ИЗМЕНЕНИЯ ПАРОЛЯ ************************** #}
+    <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form action="/update_password" method="post" class="main-form">
+                    {{ password_update_form.hidden_tag() }}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="passwordModalLabel">Смена пароля</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="group">
+                            {{ password_update_form.password_old(class="control") }}
+                            {{ password_update_form.password_old.label }}
+                            {% for error in password_update_form.password_old.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <h3>
+                                        {{ error }}
+                                    </h3>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="group">
+                            {{ password_update_form.password(class="control") }}
+                            {{ password_update_form.password.label }}
+                            {% for error in password_update_form.password.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <h3>
+                                        {{ error }}
+                                    </h3>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="group">
+                            {{ password_update_form.password_2(class="control") }}
+                            {{ password_update_form.password_2.label }}
+                            {% for error in password_update_form.password_2.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <h3>
+                                        {{ error }}
+                                    </h3>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        {{ password_update_form.submit(type="submit", class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{#   ************************** МОДАЛЬНОЕ ОКНО ДЛЯ УДАЛЕНИЯ АККАУНТА ************************** #}
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="/remove_account" class="main-form" method="post">
+                    {{ password_update_form.hidden_tag() }}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Удаление аккаунта</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3 style="color: red">
+                            <strong>
+                                Вы действительно хотите удалить свой аккаунт?
+                            </strong>
+                        </h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-danger">Удалить</button>
                     </div>
                 </form>
             </div>
