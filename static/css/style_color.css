@@ -157,6 +157,14 @@
     border-width: 3px;
 }
 
+.custom-block #avatar.avatar-m.avatar-star {
+    background-image: url(/static/svg/star.svg);
+    width: 174px;
+    height: 165px;
+    margin: 0 auto;
+    padding-top: 52px;
+}
+
 .profile-form button {
     display: block;
     margin: 18px auto;

@@ -248,12 +248,17 @@ def update_password():
     return redirect('/profile')
 
 
-@app.route('/translate/<int:translation_id>/<result>')
+@app.route('/<page_url>/<int:translation_id>/<result>')
 @login_required
-def page_translation(translation_id, result):
+def page_translation(page_url, translation_id, result):
+    if page_url not in ('translate', 'record'):
+        return abort(404)
     if result not in ('result', 'original', 'result_download', 'original_download'):
         return abort(404)
-    translation = session.query(Translations).get(translation_id)
+    if page_url == 'translate':
+        translation = session.query(Translations).get(translation_id)
+    else:
+        translation = session.query(Dictionaries).get(translation_id)
     if not translation:
         return abort(404)
     if translation.user != current_user:
@@ -264,11 +269,38 @@ def page_translation(translation_id, result):
         text = translation.original_text
     if result.endswith('_download'):
         return download_text(text, translation.savefilename)
-    show_add_to_dict = session.query(Dictionaries).\
+    show_add_to_dict = (page_url == 'translate') and session.query(Dictionaries).\
         filter(Dictionaries.from_translate_id == translation_id).first() is None
     return render_template('page_translation.html', not_show_avatar=True,
                            translation=translation, text=text, result=result,
-                           show_add_to_dict=show_add_to_dict)
+                           show_add_to_dict=show_add_to_dict, page_url=page_url)
+
+
+@app.route('/add_record/<int:translation_id>')
+@login_required
+def add_record(translation_id):
+    translation = session.query(Translations).get(translation_id)
+    if not translation:
+        return abort(404)
+    if translation.user != current_user:
+        return abort(403)
+    dictionary = session.query(Dictionaries).\
+        filter(Dictionaries.from_translate_id == translation_id).first()
+    if not dictionary:
+        dictionary = Dictionaries(
+            user=translation.user,
+            code_lang=translation.code_lang,
+            from_lang=translation.from_lang,
+            to_lang=translation.to_lang,
+            filename=translation.filename,
+            original_text=translation.original_text,
+            translated_text=translation.translated_text,
+            from_translate_id=translation.id,
+            created_date=translation.created_date,
+        )
+        session.add(dictionary)
+        session.commit()
+    return redirect(f'/record/{dictionary.id}/result')
 
 
 @app.route('/avatars/<path:filename>')

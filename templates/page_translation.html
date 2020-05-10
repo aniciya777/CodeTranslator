@@ -12,7 +12,7 @@
             {% endif %}
         </h1>
         <br>
-        <p id="avatar" class="avatar-m">
+        <p id="avatar" class="avatar-m {% if page_url == 'record' %} avatar-star {% endif %}">
             {% if current_user.avatar_m %}
                 <img src="/static/img{{ current_user.avatar_m }}" alt="avatar">
             {% else %}
@@ -34,7 +34,7 @@
                 {{ translation.formatdate }}
             </div>
             <div class="translation-file-link col-4">
-                <a href="/translate/{{ translation.id }}/{{ result }}_download">
+                <a href="/{{ page_url }}/{{ translation.id }}/{{ result }}_download">
                     {{ translation.savefilename }}
                 </a>
             </div>
@@ -44,20 +44,20 @@
         </div>
         <div class="translation-footer">
             {% if result == 'result' %}
-                <form action="/translate/{{ translation.id }}/original">
+                <form action="/{{ page_url }}/{{ translation.id }}/original">
                     <button class="btn submit" type="submit">
                         Оригинал
                     </button>
                 </form>
             {% else %}
-                <form action="/translate/{{ translation.id }}/result">
+                <form action="/{{ page_url }}/{{ translation.id }}/result">
                     <button class="btn submit" type="submit">
                         Перевод
                     </button>
                 </form>
             {% endif %}
             {% if show_add_to_dict and result == 'result' %}
-                <form action="#">
+                <form action="/add_record/{{ translation.id }}">
                     <button class="btn submit" type="submit">
                         Добавить в словарь
                     </button>
