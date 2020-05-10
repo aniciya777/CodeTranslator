@@ -248,6 +248,12 @@ def update_password():
     return redirect('/profile')
 
 
+@app.route('/translate/<int:translation_id>')
+@login_required
+def translate_ones(translation_id):
+    # return render_template('translate.html')
+    return render_template('translate.html')
+
 @app.route('/avatars/<path:filename>')
 def get_avatar(filename):
     return send_from_directory(current_app.config['AVATARS_SAVE_PATH'], filename)
