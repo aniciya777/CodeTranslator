@@ -17,6 +17,12 @@ $('#clearInputText').click(function () {
 $('#copyInputText').click(function () {
 	$('#inputText').select();
 	document.execCommand('copy');
+	Toast.add({
+		text: 'Оригинал скопирован',
+		color: '#ffffff',
+		autohide: true,
+		delay: 3000
+	});
 });
 
 $('#copyOutputText').click(function () {
@@ -26,6 +32,12 @@ $('#copyOutputText').click(function () {
 	copytext.select();
 	document.execCommand('copy');
 	document.body.removeChild(copytext);
+	Toast.add({
+		text: 'Перевод скопирован',
+		color: '#ffffff',
+		autohide: true,
+		delay: 3000
+	});
 });
 
 $('#inputGroupSelectLanguageFrom').change(function() {

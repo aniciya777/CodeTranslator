@@ -7,13 +7,13 @@
     <ul class="nav nav-pills mb-3 h5" id="pills-tab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="pills-text-tab" data-toggle="pill" href="#pills-text" role="tab" aria-controls="pills-text" aria-selected="true">
-                <img src="static/svg/book.svg" width="25" height="25" class="d-inline-block align-top" alt="">
+                <img src="/static/svg/book.svg" width="25" height="25" class="d-inline-block align-top" alt="">
                 Текст
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="pills-document-tab" data-toggle="pill" href="#pills-document" role="tab" aria-controls="pills-document" aria-selected="false">
-                <img src="static/svg/file.svg" width="25" height="25" class="d-inline-block align-top" alt="">
+                <img src="/static/svg/file.svg" width="25" height="25" class="d-inline-block align-top" alt="">
                 Документ
             </a>
         </li>
@@ -79,25 +79,25 @@
                     <div class="form-row">
                         <div class="form-col col-3">
                             <div type="submit" class="btn btn-light w-100" id="clearInputText">
-                                <img src="static/svg/clear.svg" width="20" height="20" class="d-inline-block align-top" alt="">
+                                <img src="/static/svg/clear.svg" width="20" height="20" class="d-inline-block align-top" alt="">
                                 Очистить
                             </div>
                         </div>
                         <div class="form-col col-3">
                             <div type="submit" class="btn btn-light w-100" id="copyInputText">
-                                <img src="static/svg/copy.svg" width="20" height="20" class="d-inline-block align-top" alt="">
+                                <img src="/static/svg/copy.svg" width="20" height="20" class="d-inline-block align-top" alt="">
                                 Копировать
                             </div>
                         </div>
                         <div class="form-col col-3">
                             <div type="submit" class="btn btn-light w-100" id="copyOutputText">
-                                <img src="static/svg/copy.svg" width="20" height="20" class="d-inline-block align-top" alt="">
+                                <img src="/static/svg/copy.svg" width="20" height="20" class="d-inline-block align-top" alt="">
                                 Копировать
                             </div>
                         </div>
                         <div class="form-col col-3">
                             <div type="submit" class="btn btn-light w-100" id="downloadOutputText">
-                                <img src="static/svg/download.svg" width="20" height="20" class="d-inline-block align-top" alt="">
+                                <img src="/static/svg/download.svg" width="20" height="20" class="d-inline-block align-top" alt="">
                                 Скачать
                             </div>
                         </div>
@@ -130,5 +130,5 @@
         var dir_traslates = {{ dir_json }};
         var langs_traslates = {{ langs_json }};
     </script>
-    <script src="../static/js/file_uploader.js"></script>
+    <script src="/static/js/file_uploader.js"></script>
 {% endblock %}

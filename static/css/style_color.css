@@ -151,8 +151,86 @@
     object-fit: cover;
 }
 
+.custom-block #avatar.avatar-m img {
+    width: 72px;
+    height: 72px;
+    border-width: 3px;
+}
+
 .profile-form button {
     display: block;
     margin: 18px auto;
     min-width: 350px;
+}
+
+.translation-block {
+    background: #FFFFFF;
+    border: 3px solid #000000;
+    box-sizing: border-box;
+    border-radius: 15px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.translation-head {
+    height: 45px;
+    padding: 10px 24px;
+    font-family: Roboto, serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 21px;
+}
+
+.translation-head div {
+    padding: 0;
+}
+
+.translation-preamble {
+    text-align: left;
+    color: #FF0000;
+}
+
+.translation-datetime {
+    text-align: center;
+    color: #000000;
+}
+
+.translation-file-link, .translation-file-link a {
+    text-align: right;
+    text-decoration-line: underline;
+    color: #FF0000 !important;
+}
+
+.translation-body {
+    margin-top: 23px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.translation-body #outputText {
+    width: 100%;
+    border-radius: 15px;
+    border: none;
+    display: block;
+    overflow-y: scroll;
+    min-height: 300px;
+    padding: 24px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 18px;
+}
+
+#inputText, #outputText {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 14px;
+}
+
+.translation-footer {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.translation-footer form {
+    margin-bottom: 10px;
 }

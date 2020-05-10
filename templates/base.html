@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <title>CODE Переводчик</title>
     <meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" name="viewport">
-    <link rel="stylesheet" type="text/css" href="static/css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="static/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="static/css/primer.css">
-    <link rel="stylesheet" href="static/css/octicons.min.css">
-    <link rel="stylesheet" type="text/css" href="static/css/style.css">
-    <link rel="stylesheet" type="text/css" href="static/css/style_color.css">
-    <link rel="stylesheet" type="text/css" href="static/fonts/Roboto/stylesheet.css">
-    <script src="static/js/jquery-3.4.1.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
-    <link rel="icon" href="static/ico/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/static/css/primer.css">
+    <link rel="stylesheet" href="/static/css/octicons.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style_color.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/toast.css">
+    <link rel="stylesheet" type="text/css" href="/static/fonts/Roboto/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="/static/fonts/Source_Code_Pro/stylesheet.css">
+    <script src="/static/js/jquery-3.4.1.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/toast.js"></script>
+    <link rel="icon" href="/static/ico/favicon.ico">
 </head>
 <body>
 <header>
@@ -25,14 +28,14 @@
         {% if current_user.is_authenticated and not not_show_avatar %}
             <a class="navbar-logo" href="/profile">
                 {% if current_user.avatar_s %}
-                    <img src="../static/img{{ current_user.avatar_s }}" alt="profile">
+                    <img src="/static/img{{ current_user.avatar_s }}" alt="profile">
                 {% else %}
-                    <img src="../static/svg/user.svg" alt="profile">
+                    <img src="/static/svg/user.svg" alt="profile">
                 {% endif %}
             </a>
         {% endif %}
         <a class="navbar-brand" href="/">
-            <img src="static/svg/file-code.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+            <img src="/static/svg/file-code.svg" width="30" height="30" class="d-inline-block align-top" alt="">
             CODE Переводчик
         </a>
     </nav>
@@ -40,7 +43,7 @@
 <div class="container">
     {% block content %}{% endblock %}
 </div>
-<script src="static/js/action.js"></script>
+<script src="/static/js/action.js"></script>
 <footer class="fixed-bottom">
     <a href="http://translate.yandex.ru">Переведено сервисом «Яндекс.Переводчик»</a>
 </footer>

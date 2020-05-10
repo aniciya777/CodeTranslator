@@ -1,0 +1,80 @@
+{% set page = 'page_translation' %}
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="custom-block">
+        <h1>
+            {% if result == 'result' %}
+                Перевод
+            {% else %}
+                Оригинал
+            {% endif %}
+        </h1>
+        <br>
+        <p id="avatar" class="avatar-m">
+            {% if current_user.avatar_m %}
+                <img src="/static/img{{ current_user.avatar_m }}" alt="avatar">
+            {% else %}
+                <img src="/static/svg/user.svg" alt="avatar">
+            {% endif %}
+        </p>
+        <br>
+    </div>
+    <div class="main-form">
+        <div class="translation-block translation-head row">
+            <div class="translation-preamble col-4">
+                {% if result == 'result' %}
+                    {{ translation.code_lang.desc }} ({{ translation.from_lang.code|title }} -> {{ translation.to_lang.code|title }})
+                {% else %}
+                    {{ translation.code_lang.desc }}
+                {% endif %}
+            </div>
+            <div class="translation-datetime col-4">
+                {{ translation.formatdate }}
+            </div>
+            <div class="translation-file-link col-4">
+                <a href="/translate/{{ translation.id }}/{{ result }}_download">
+                    {{ translation.savefilename }}
+                </a>
+            </div>
+        </div>
+        <div class="translation-block translation-body">
+            <textarea id="outputText" readonly>{{ text }}</textarea>
+        </div>
+        <div class="translation-footer">
+            {% if result == 'result' %}
+                <form action="/translate/{{ translation.id }}/original">
+                    <button class="btn submit" type="submit">
+                        Оригинал
+                    </button>
+                </form>
+            {% else %}
+                <form action="/translate/{{ translation.id }}/result">
+                    <button class="btn submit" type="submit">
+                        Перевод
+                    </button>
+                </form>
+            {% endif %}
+            {% if show_add_to_dict and result == 'result' %}
+                <form action="#">
+                    <button class="btn submit" type="submit">
+                        Добавить в словарь
+                    </button>
+                </form>
+            {% endif %}
+            <div>
+                <button class="btn submit" id="copyOutputText">
+                    Копировать
+                </button>
+            </div>
+        </div>
+    </div>
+    <style>
+        body {
+            background-image: url("/static/svg/background 2.svg");
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+{% endblock %}

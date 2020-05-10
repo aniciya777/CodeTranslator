@@ -7,6 +7,7 @@ class CodeLanguages(SqlAlchemyBase):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     code = sqlalchemy.Column(sqlalchemy.String, unique=True, index=True)
     desc = sqlalchemy.Column(sqlalchemy.String, index=True)
+    files = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
     def __repr__(self):
         return f'<{self.code} - {self.desc}>'

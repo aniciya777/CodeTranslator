@@ -23,3 +23,14 @@ class Translations(SqlAlchemyBase):
 
     def __repr__(self):
         return f'<Translations {self.id} {self.created_date} {self.user} {self.code_lang} ({self.from_lang}) "{self.original_text[:10]}" -> ({self.to_lang}) "{self.translated_text[:10]}">'
+
+    @property
+    def formatdate(self):
+        return self.created_date.strftime("%d.%m.%Y %H:%M")
+
+    @property
+    def savefilename(self):
+        if self.filename:
+            return self.filename
+        file = self.code_lang.files.split(', ')[0]
+        return f'translation{self.id}.{file}'

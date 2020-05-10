@@ -5,10 +5,10 @@
 {% block content %}
     <div class="custom-block">
         <p id="avatar">
-            {% if current_user.avatar_s %}
-                <img src="../static/img{{ current_user.avatar_l }}" alt="avatar">
+            {% if current_user.avatar_l %}
+                <img src="/static/img{{ current_user.avatar_l }}" alt="avatar">
             {% else %}
-                <img src="../static/svg/user.svg" alt="avatar">
+                <img src="/static/svg/user.svg" alt="avatar">
             {% endif %}
         </p>
         <h1>
@@ -28,7 +28,7 @@
     </div>
     <style>
         body {
-            background-image: url("static/svg/background 2.svg");
+            background-image: url("/static/svg/background 2.svg");
             background-position: center;
             background-attachment: fixed;
         }

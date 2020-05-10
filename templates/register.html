@@ -6,7 +6,7 @@
     <form action="#" method="post" class="main-form" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <input type="hidden" name="max_file_size" value="{{ MAX_CONTENT_LENGTH }}">
-        <img src="../static/svg/file-code.svg" alt="icon" class="form-icon">
+        <img src="/static/svg/file-code.svg" alt="icon" class="form-icon">
         <h1>
             <span>
                 Регистрация
@@ -77,7 +77,7 @@
     </form>
     <style>
         body {
-            background-image: url("static/svg/background.svg");
+            background-image: url("/static/svg/background.svg");
             background-position: center;
             background-attachment: fixed;
         }

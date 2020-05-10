@@ -1,7 +1,7 @@
 from pprint import pprint
 
 from flask import Flask, render_template, request, redirect, send_from_directory, current_app, \
-    url_for
+    url_for, abort
 
 from config import *
 from functions import detect_lang, translate, replacer, clean_last_history_user
@@ -248,11 +248,28 @@ def update_password():
     return redirect('/profile')
 
 
-@app.route('/translate/<int:translation_id>')
+@app.route('/translate/<int:translation_id>/<result>')
 @login_required
-def translate_ones(translation_id):
-    # return render_template('translate.html')
-    return render_template('translate.html')
+def page_translation(translation_id, result):
+    if result not in ('result', 'original', 'result_download', 'original_download'):
+        return abort(404)
+    translation = session.query(Translations).get(translation_id)
+    if not translation:
+        return abort(404)
+    if translation.user != current_user:
+        return abort(403)
+    if result.startswith('result'):
+        text = translation.translated_text
+    else:
+        text = translation.original_text
+    if result.endswith('_download'):
+        return download_text(text, translation.savefilename)
+    show_add_to_dict = session.query(Dictionaries).\
+        filter(Dictionaries.from_translate_id == translation_id).first() is None
+    return render_template('page_translation.html', not_show_avatar=True,
+                           translation=translation, text=text, result=result,
+                           show_add_to_dict=show_add_to_dict)
+
 
 @app.route('/avatars/<path:filename>')
 def get_avatar(filename):
@@ -337,10 +354,14 @@ def index():
 
 def download():
     text = request.form.get('outputText', '')
+    filename = request.form.get('hidden_file_name', 'translate.txt')
+    return download_text(text, filename)
+
+
+def download_text(text, filename):
     temp_path = DOWNLOAD_FILE_PATH + str(md5(text.encode('utf-8')).hexdigest())
     with open(temp_path, 'w', encoding='utf-8') as f:
         f.write(text)
-    filename = request.form.get('hidden_file_name', 'translate.txt')
 
     def generate():
         with open(temp_path) as f:
