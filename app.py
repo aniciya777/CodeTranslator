@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, send_from_directory
     url_for
 
 from config import *
-from functions import detect_lang, translate, replacer
+from functions import detect_lang, translate, replacer, clean_last_history_user
 from hashlib import md5
 import os
 from flask_wtf import FlaskForm
@@ -14,9 +14,12 @@ from wtforms.validators import DataRequired, Email as EmailValidator, EqualTo, \
 from flask_wtf.file import FileAllowed
 from data import db_session
 from data.users import User
+from data.translations import Translations
+from data.dictionaries import Dictionaries
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_avatars import Avatars
 import logging
+import chardet
 
 
 app = Flask(__name__)
@@ -24,11 +27,9 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 login_manager = LoginManager()
 login_manager.init_app(app)
-db_session.global_init("db/database.sqlite")
-session = db_session.create_session()
 avatars = Avatars(app)
 app.config['AVATARS_SAVE_PATH'] = AVATARS_SAVE_PATH
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.INFO)
 
 
 @login_manager.user_loader
@@ -65,16 +66,16 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    email = StrippedStringField('Почта', validators=[
+    email = StrippedStringField('* Почта', validators=[
         DataRequired(message='Введите почту'),
         EmailValidator()
     ])
-    password = StrippedPasswordField('Пароль', validators=[
+    password = StrippedPasswordField('* Пароль', validators=[
         DataRequired(message='Введите пароль'),
         LengthValidator(min=MIN_PASSWORD_LENGTH, message=f'Длина пароля более {MIN_PASSWORD_LENGTH} символов'),
         RegexpValidator(r'(?=.*[a-zA-Z])(?=.*[0-9])', flags=0, message='Пароль должен содержать цифры и буквы латинского алфавита')
     ])
-    password_2 = StrippedPasswordField('Повторите пароль', validators=[
+    password_2 = StrippedPasswordField('* Повторите пароль', validators=[
         DataRequired(message='Введите пароль ещё раз'),
         EqualTo('password', 'Пароли не совпадают')
     ])
@@ -261,9 +262,12 @@ def index():
     try:
         if request.files:
             file_name = request.files['files'].filename
+            logging.info(file_name)
             f = request.files['files'].read()
+            result = chardet.detect(f)
+            encoding = result['encoding']
             if f:
-                inputText = f.decode('utf-8')
+                inputText = f.decode(encoding)
     except BaseException:
         pass
     lang1_key = request.form.get('inputGroupSelectLanguageFrom', '')
@@ -293,6 +297,35 @@ def index():
     }
     if not params['file_name']:
         params['file_name'] = 'translate.' + parser['files'][0]
+    # ****************************** СОХРАНЕНИЕ ПЕРЕВОДА ****************************************
+    if current_user.is_authenticated:
+        if inputText and outputText:
+            last_translation = session.query(Translations).filter(Translations.user == current_user) \
+                .order_by(Translations.created_date.desc()).first()
+            code_lang = parser['db_record']
+            from_lang = session.query(Languages).filter(Languages.code == lang1_key).first()
+            to_lang = session.query(Languages).filter(Languages.code == lang2_key).first()
+            if last_translation and \
+                    last_translation.code_lang == code_lang and \
+                    last_translation.from_lang == from_lang and \
+                    last_translation.to_lang == to_lang and \
+                    last_translation.original_text == inputText and \
+                    last_translation.translated_text == outputText:
+                logging.info('Дубликат перевода')
+            else:
+                new_translation = Translations(
+                    user_id=current_user.id,
+                    code_lang=code_lang,
+                    from_lang=from_lang,
+                    to_lang=to_lang,
+                    filename=file_name,
+                    original_text=inputText,
+                    translated_text=outputText,
+                )
+                session.add(new_translation)
+                session.commit()
+                count_cleaned = clean_last_history_user(current_user.id)
+    # *******************************************************************************************
     return render_template('index.html', **params)
 
 

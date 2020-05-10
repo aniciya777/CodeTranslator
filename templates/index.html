@@ -28,7 +28,7 @@
             <div class="col-12 col-md-8">
                 <select class="custom-select" id="selectType" name='selectType' required="required">
                     {% for key, value in PARSERS.items() %}
-                        <option value="{{ key }}" {% if selectType == key %} selected='selected'{% endif %}>{{ value['desc'] }}</option>
+                        <option value="{{ key }}" {% if selectType == key %} selected='selected'{% endif %}>{{ value['db_record'].desc }}</option>
                     {% endfor %}
                 </select>
             </div>

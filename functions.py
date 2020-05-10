@@ -1,5 +1,7 @@
 import requests
 from config import *
+from data.users import User
+from data.translations import Translations
 
 
 def detect_lang(data):
@@ -51,3 +53,15 @@ def replacer(text, data):
             pass
     text = '\r\n'.join(text)
     return text
+
+def clean_last_history_user(user_id):
+    user = session.query(User).get(user_id)
+    if not user:
+        return None
+    translations = session.query(Translations).filter(Translations.user == user).\
+        order_by(Translations.created_date)[:-MAX_TRANSLATIONS_IN_HISTORY_FOR_USER]
+    count = len(translations)
+    for translation in translations:
+        session.delete(translation)
+    session.commit()
+    return count

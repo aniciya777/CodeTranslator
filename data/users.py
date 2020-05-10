@@ -1,4 +1,4 @@
-from .db_session import SqlAlchemyBase
+from .db_session import SqlAlchemyBase, orm
 import sqlalchemy
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,6 +14,7 @@ class User(SqlAlchemyBase, UserMixin):
     avatar_s = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     avatar_m = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     avatar_l = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    translations = orm.relation("Translations", back_populates='user')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
