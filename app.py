@@ -303,6 +303,24 @@ def add_record(translation_id):
     return redirect(f'/record/{dictionary.id}/result')
 
 
+@app.route('/history', methods=['GET', 'POST'])
+@login_required
+def list_translations():
+    translations = session.query(Translations).filter(Translations.user == current_user).\
+        order_by(Translations.created_date.desc()).all()
+    return render_template('history.html', page='history', translations=translations,
+                           not_show_avatar=True, page_url='translate')
+
+
+@app.route('/dictionary', methods=['GET', 'POST'])
+@login_required
+def list_dictionaries():
+    dictionaries = session.query(Dictionaries).filter(Dictionaries.user == current_user).\
+        order_by(Dictionaries.created_date.desc()).all()
+    return render_template('history.html', page='dictionary', translations=dictionaries,
+                           not_show_avatar=True, page_url='record')
+
+
 @app.route('/avatars/<path:filename>')
 def get_avatar(filename):
     return send_from_directory(current_app.config['AVATARS_SAVE_PATH'], filename)

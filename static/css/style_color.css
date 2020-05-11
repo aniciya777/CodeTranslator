@@ -242,3 +242,60 @@
 .translation-footer form {
     margin-bottom: 10px;
 }
+
+.translation-list {
+    margin-top: 23px;
+    margin-left: 45px;
+    margin-right: 45px;
+}
+
+.translation-list > div {
+    margin-left: -45px;
+    margin-right: -45px;
+    overflow-y: scroll;
+    position: relative;
+    height: 300px;
+    resize: vertical;
+}
+
+.translation-list > div::-webkit-scrollbar {
+    width: 25px;
+}
+
+.translation-list > div::-webkit-scrollbar-button {
+    display: none;
+}
+
+.translation-list > div::-webkit-scrollbar-track-piece {
+    background: #FFFFFF;
+    border: 3px solid #000000;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+
+.translation-list > div::-webkit-scrollbar-thumb {
+    background: #E5E5E5;
+    border: 3px solid #000000;
+    box-sizing: border-box;
+    border-radius: 25px;
+    margin: 3px 5px;
+}
+
+.translation-item-text {
+    border-bottom: 2px solid #000000;
+    margin-left: 45px;
+    margin-right: 20px;
+    text-align: justify;
+}
+
+.translation-item-text pre {
+    margin: 20px 16px;
+    overflow: hidden;
+    max-height: 2.4em;
+    line-height: 1.2em;
+    font-family: 'Source Code Pro', monospace;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+}
