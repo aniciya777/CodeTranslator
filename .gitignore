@@ -11,3 +11,4 @@ data/__pycache__/
 parsers/__pycache__/
 static/img/avatars
 venv/
+alembic/versions/

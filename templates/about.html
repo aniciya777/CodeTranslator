@@ -1,0 +1,53 @@
+{% set page = 'about' %}
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="custom-block">
+        <p id="avatar">
+            <img src="/static/img/author.jpg" alt="avatar">
+        </p>
+        <h1>
+            О нас
+        </h1>
+    </div>
+    <div class="main-form about-form">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <p>
+                    Здравствуйте!
+                </p>
+                <p>
+                    Этот сайт был создан для программистов, которым часто приходится работать с чужим кодом, в котором есть комментарии на иностранном языке. Также этот сайт может быть полезен тем, кто хочет свои комментарии на родном языке перевести на иностранный. Переведено сервисом <a href="https://translate.yandex.ru/">«Яндекс.Переводчик»</a>.
+                </p>
+                <p>
+                    После авторизации на сайте у Вас появится масса возможностей для комфортной работы: словарь, история переводов, возможность скачать файл с переводом, словарь для слов, которые вы хотите запомнить и не хотите потерять.
+                </p>
+                <p>
+                    Сайт был выполнен в рамках учебной программы <a href="https://yandexlyceum.ru/">Яндекс Лицея</a>.
+                </p>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <p>
+                    Hello!
+                </p>
+                <p>
+                    This site was created for programmers who often have to work with someone else's code that contains comments in a foreign language. This site can also be useful for those who want to translate their comments in their native language into a foreign language. Translated by <a href="https://translate.yandex.ru/">«Yandex.Translate»</a>.
+                </p>
+                <p>
+                    After logging in on the site, you will have a lot of opportunities for comfortable work: a dictionary, a translation history, the ability to download a translation file, a dictionary for words that you want to remember and do not want to lose.
+                </p>
+                <p>
+                    The site was designed as part of the <a href="https://yandexlyceum.ru/">Yandex Lyceum</a> curriculum.
+                </p>
+            </div>
+        </div>
+    </div>
+    <style>
+        body {
+            background-image: url("/static/svg/background 2.svg");
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+{% endblock %}

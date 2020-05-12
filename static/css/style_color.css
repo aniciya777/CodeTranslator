@@ -322,3 +322,22 @@
     top: 50%;
     display: block;
 }
+
+.about-form {
+    margin-top: 44px;
+    text-align: justify;
+    font-family: Roboto, serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000000;
+}
+
+.about-form div.row > div {
+    padding: 0 44px;
+}
+
+.about-form div.row > div:first-child {
+    border-right: 2px solid #000000;
+}

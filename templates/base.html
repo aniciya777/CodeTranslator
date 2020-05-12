@@ -132,6 +132,18 @@
                         </h6>
                     {% endif %}
                 {% endif %}
+                {% if page != 'about' %}
+                    <a href="/about">
+                        <h1>
+                            О нас
+                        </h1>
+                    </a>
+                    {% if not current_user.is_authenticated %}
+                        <h6>
+                            всегда Вам рады!
+                        </h6>
+                    {% endif %}
+                {% endif %}
                 {% if current_user.is_authenticated %}
                     <a href="/logout">
                         <h1>
