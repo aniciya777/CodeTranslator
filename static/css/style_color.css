@@ -257,6 +257,7 @@
     position: relative;
     height: 300px;
     resize: vertical;
+    scrollbar-color: #E5E5E5 #ffffff;
 }
 
 .translation-list > div::-webkit-scrollbar {
@@ -274,7 +275,6 @@
     border-radius: 15px;
 }
 
-
 .translation-list > div::-webkit-scrollbar-thumb {
     background: #E5E5E5;
     border: 3px solid #000000;
@@ -288,6 +288,7 @@
     margin-left: 45px;
     margin-right: 20px;
     text-align: justify;
+    position: relative;
 }
 
 .translation-item-text pre {
@@ -299,4 +300,24 @@
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
+}
+
+.translation-item-text .translation-head {
+    margin: 0 16px 8px;
+    padding: 0;
+    height: auto;
+}
+
+.translation-item-text .remove_button {
+    position: absolute;
+    bottom: 50%;
+    left: -46px;
+        width: 24px;
+    height: 24px;
+}
+
+.translation-item-text .remove_button a {
+    position: relative;
+    top: 50%;
+    display: block;
 }

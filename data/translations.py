@@ -34,3 +34,18 @@ class Translations(SqlAlchemyBase):
             return self.filename
         file = self.code_lang.files.split(', ')[0]
         return f'translation{self.id}.{file}'
+
+    @property
+    def alldata(self):
+        return f'''{self.code_lang}
+{self.from_lang}
+{self.to_lang}
+{self.created_date}
+{self.formatdate}
+{self.savefilename}
+{self.original_text}
+{self.translated_text}
+'''.lower()
+
+    def like(self, pattern):
+        return pattern.lower() in self.alldata
