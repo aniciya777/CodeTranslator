@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 from parsers import python, text
 from data import db_session
 from data.languages import Languages
@@ -106,3 +107,8 @@ def getLangs():
 getLangs()
 print(DIRS)
 print(LANGS)
+
+try:
+    os.makedirs(AVATARS_SAVE_PATH)
+except:
+    pass
